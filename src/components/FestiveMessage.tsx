@@ -63,12 +63,27 @@ export const FestiveMessage: React.FC = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl border border-festive-border bg-background-elevated/40 backdrop-blur-md shadow-diya-inner"
+          className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl border border-festive-border bg-background-elevated/40 backdrop-blur-md shadow-diya-inner mb-8"
         >
           <span className="w-2.5 h-2.5 rounded-full bg-amber-warm shadow-[0_0_8px_#FFB347] animate-pulse" />
           <span className="text-xs sm:text-sm font-medium tracking-wider text-ivory">
             Wishing You & Your Family A Blessed & Joyous Deepavali
           </span>
+        </motion.div>
+
+        {/* Elegant Creator Signature */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.5 }}
+          className="flex items-center justify-center gap-2 text-xs sm:text-sm text-muted/80 font-light"
+        >
+          <span className="w-6 sm:w-10 h-[1px] bg-gradient-to-r from-transparent to-gold-primary/30" />
+          <p className="font-heading italic tracking-wide text-ivory/90 text-sm sm:text-base">
+            A festive celebration, lovingly created and shared by <span className="not-italic font-medium text-gold-primary">Aditya Pushpakar</span>.
+          </p>
+          <span className="w-6 sm:w-10 h-[1px] bg-gradient-to-l from-transparent to-gold-primary/30" />
         </motion.div>
       </div>
     </section>

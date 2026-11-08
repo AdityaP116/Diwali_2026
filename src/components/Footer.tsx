@@ -40,10 +40,15 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Small Festive Closing Message */}
-        <div className="flex items-center gap-2 text-xs text-muted/70 mb-4">
-          <span>Crafted with celebration & devotion</span>
-          <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400/30" />
-          <span>for Diwali 2026</span>
+        <div className="flex flex-col items-center gap-1.5 text-xs text-muted/75 mb-4 text-center">
+          <div className="flex items-center gap-2">
+            <span>Crafted with celebration & devotion</span>
+            <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400/30" />
+            <span>for Diwali 2026</span>
+          </div>
+          <div className="text-[13px] font-heading italic text-ivory/90 tracking-wide mt-1">
+            With warm wishes, <span className="not-italic font-medium text-gold-primary">Aditya Pushpakar</span> ❤️
+          </div>
         </div>
 
         {/* Copyright notice */}

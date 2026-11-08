@@ -5,20 +5,49 @@ import { ExperiencesSection } from './components/ExperiencesSection';
 import { FestiveMessage } from './components/FestiveMessage';
 import { Footer } from './components/Footer';
 import { AmbientParticles } from './components/AmbientParticles';
-import { ExperienceModal } from './components/ExperienceModal';
+import { LightADiyaStudio } from './components/LightADiyaStudio';
+import { RangoliStudio } from './components/RangoliStudio';
+import { FireworksPlayground } from './components/FireworksPlayground';
+import { WishStudio } from './components/WishStudio';
+
+export type ActiveExperienceView = 'home' | 'light-a-diya' | 'rangoli-studio' | 'fireworks-playground' | 'wish-studio';
 
 export function App() {
-  const [selectedExperience, setSelectedExperience] = useState<string | null>(null);
+  const [activeView, setActiveView] = useState<ActiveExperienceView>('home');
 
   const scrollToExperiences = () => {
-    const el = document.getElementById('experiences');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+    if (activeView !== 'home') {
+      setActiveView('home');
+      setTimeout(() => {
+        const el = document.getElementById('experiences');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById('experiences');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const handleEnterFestival = () => {
-    setSelectedExperience('light-a-diya');
+    setActiveView('light-a-diya');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleExperienceSelect = (id: string) => {
+    if (
+      id === 'light-a-diya' ||
+      id === 'rangoli-studio' ||
+      id === 'fireworks-playground' ||
+      id === 'wish-studio'
+    ) {
+      setActiveView(id as ActiveExperienceView);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleBackToHome = () => {
+    setActiveView('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -37,33 +66,46 @@ export function App() {
         {/* Navigation Bar */}
         <Navbar onExploreClick={scrollToExperiences} />
 
-        {/* Main Content Area */}
+        {/* Dynamic View Routing for All 4 Experiences */}
         <main className="flex-grow">
-          {/* Hero Section */}
-          <Hero 
-            onEnterClick={handleEnterFestival} 
-            onExploreClick={scrollToExperiences} 
-          />
+          {activeView === 'home' && (
+            <>
+              {/* Hero Section */}
+              <Hero 
+                onEnterClick={handleEnterFestival} 
+                onExploreClick={scrollToExperiences} 
+              />
 
-          {/* Experiences Section */}
-          <ExperiencesSection onSelectExperience={(id) => setSelectedExperience(id)} />
+              {/* Experiences Section */}
+              <ExperiencesSection onSelectExperience={handleExperienceSelect} />
 
-          {/* Festive Message Section */}
-          <FestiveMessage />
+              {/* Festive Message Section */}
+              <FestiveMessage />
+            </>
+          )}
+
+          {activeView === 'light-a-diya' && (
+            <LightADiyaStudio onBackToHome={handleBackToHome} />
+          )}
+
+          {activeView === 'rangoli-studio' && (
+            <RangoliStudio onBackToHome={handleBackToHome} />
+          )}
+
+          {activeView === 'fireworks-playground' && (
+            <FireworksPlayground onBackToHome={handleBackToHome} />
+          )}
+
+          {activeView === 'wish-studio' && (
+            <WishStudio onBackToHome={handleBackToHome} />
+          )}
         </main>
 
         {/* Footer */}
         <Footer />
       </div>
-
-      {/* Experience Preview Modal / Placeholder Viewer */}
-      <ExperienceModal
-        experienceId={selectedExperience}
-        onClose={() => setSelectedExperience(null)}
-      />
     </div>
   );
 }
 
 export default App;
-
