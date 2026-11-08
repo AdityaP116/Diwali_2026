@@ -374,3 +374,4 @@ export const Diya3DCanvas: React.FC<Diya3DCanvasProps> = ({
     </div>
   );
 };
+

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, Compass } from 'lucide-react';
+import { ArrowRight, Compass } from 'lucide-react';
 import { Diya3DCanvas } from './Diya3DCanvas';
 
 interface HeroProps {
@@ -21,21 +21,22 @@ export const Hero: React.FC<HeroProps> = ({ onEnterClick, onExploreClick }) => {
       />
 
       <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center">
-        {/* Eyebrow with decorative lines */}
+        {/* Classical Ornamental Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="flex items-center gap-3 mb-6"
+          className="flex items-center gap-3 mb-6 select-none"
         >
-          <span className="w-8 sm:w-16 h-[1px] bg-gradient-to-r from-transparent via-gold-primary/60 to-gold-primary" />
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-gold-primary/30 bg-gold-primary/5 backdrop-blur-sm">
-            <Sparkles className="w-3.5 h-3.5 text-amber-warm animate-pulse" />
-            <span className="text-[11px] sm:text-xs uppercase tracking-[0.25em] text-gold-primary font-medium">
-              A Festival of Lights
+          <span className="w-10 sm:w-20 h-[1px] bg-gradient-to-r from-transparent via-gold-primary/40 to-gold-primary/80" />
+          <div className="flex items-center gap-2">
+            <span className="font-sanskrit text-sm text-gold-primary/90 font-medium">ॐ</span>
+            <span className="font-heading text-xs sm:text-sm tracking-[0.35em] uppercase text-gold-glow font-medium">
+              Deepotsava • The Sacred Light
             </span>
+            <span className="font-sanskrit text-sm text-gold-primary/90 font-medium">ॐ</span>
           </div>
-          <span className="w-8 sm:w-16 h-[1px] bg-gradient-to-l from-transparent via-gold-primary/60 to-gold-primary" />
+          <span className="w-10 sm:w-20 h-[1px] bg-gradient-to-l from-transparent via-gold-primary/40 to-gold-primary/80" />
         </motion.div>
 
         {/* Editorial Headlines */}
@@ -93,7 +94,7 @@ export const Hero: React.FC<HeroProps> = ({ onEnterClick, onExploreClick }) => {
             type="button"
             className="w-full sm:w-auto px-8 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold bg-gradient-to-r from-gold-secondary via-gold-primary to-amber-warm text-background font-medium shadow-[0_0_24px_rgba(231,190,112,0.35)] hover:shadow-[0_0_36px_rgba(231,190,112,0.55)] hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 group"
           >
-            <span>Enter the Festival</span>
+            <span>Light Your First Diya</span>
             <ArrowRight className="w-4 h-4 text-background group-hover:translate-x-1 transition-transform" />
           </button>
 
@@ -104,7 +105,7 @@ export const Hero: React.FC<HeroProps> = ({ onEnterClick, onExploreClick }) => {
             className="w-full sm:w-auto px-8 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-[0.2em] font-medium border border-festive-border bg-background-elevated/40 hover:bg-background-elevated/80 hover:border-gold-primary/50 text-ivory hover:text-gold-glow transition-all flex items-center justify-center gap-2 group backdrop-blur-sm"
           >
             <Compass className="w-4 h-4 text-gold-primary group-hover:rotate-45 transition-transform" />
-            <span>Explore Experiences</span>
+            <span>Wander the Celebrations</span>
           </button>
         </motion.div>
       </div>
