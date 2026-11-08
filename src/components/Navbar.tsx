@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Menu, X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sounds } from '../utils/soundEffects';
 
 interface NavbarProps {
   onExploreClick: () => void;
@@ -26,7 +27,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onExploreClick }) => {
   ];
 
   const toggleSound = () => {
-    setIsMuted(!isMuted);
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    sounds.setMuted(nextMuted);
+    if (!nextMuted) {
+      sounds.startFestiveAmbience();
+      sounds.playTempleBell(880);
+    } else {
+      sounds.stopFestiveAmbience();
+    }
   };
 
   return (

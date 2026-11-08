@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { ArrowLeft, Sparkles, Volume2, VolumeX, Flame } from 'lucide-react';
+import { sounds } from '../utils/soundEffects';
 
 interface FireworksPlaygroundProps {
   onBackToHome: () => void;
@@ -46,43 +47,17 @@ export const FireworksPlayground: React.FC<FireworksPlaygroundProps> = ({ onBack
   const [fireworkType, setFireworkType] = useState<'burst' | 'chrysanthemum' | 'willow' | 'ring' | 'chakra'>('chrysanthemum');
   const [selectedColor, setSelectedColor] = useState<string>('random');
   const [autoLaunch, setAutoLaunch] = useState<boolean>(true);
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
-  const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
 
   const rocketsRef = useRef<Rocket[]>([]);
   const particlesRef = useRef<Particle[]>([]);
 
-  // Synthesize soft pleasant firework audio using Web Audio API
-  const playExplosionSound = useCallback(() => {
-    if (!soundEnabled) return;
-    try {
-      const ctx = audioCtx || new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-      if (!audioCtx) setAudioCtx(ctx);
-
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(140 + Math.random() * 40, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.35);
-
-      gain.gain.setValueAtTime(0.2, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start();
-      osc.stop(ctx.currentTime + 0.35);
-    } catch {
-      // Audio playback silently guarded
-    }
-  }, [soundEnabled, audioCtx]);
-
   // Create explosion particles based on firework type
   const createExplosion = useCallback((x: number, y: number, color: string, type: Rocket['type']) => {
-    playExplosionSound();
-    const count = type === 'willow' ? 90 : type === 'chrysanthemum' ? 80 : 60;
+    if (soundEnabled) {
+      sounds.playFireworkExplosion(type);
+    }
+    const count = type === 'willow' ? 95 : type === 'chrysanthemum' ? 85 : 65;
 
     for (let i = 0; i < count; i++) {
       let angle = (i / count) * Math.PI * 2;
@@ -113,10 +88,13 @@ export const FireworksPlayground: React.FC<FireworksPlaygroundProps> = ({ onBack
         friction: 0.975,
       });
     }
-  }, [playExplosionSound]);
+  }, [soundEnabled]);
 
   // Launch rocket
   const launchRocket = useCallback((startX: number, targetX: number, targetY: number) => {
+    if (soundEnabled) {
+      sounds.playRocketLaunch();
+    }
     const color = selectedColor === 'random'
       ? FIREWORK_COLORS[Math.floor(Math.random() * FIREWORK_COLORS.length)]
       : selectedColor;

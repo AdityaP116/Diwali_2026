@@ -6,6 +6,7 @@ import { LightDiyaForm } from './LightDiyaForm';
 import { DiyaWishDetailModal } from './DiyaWishDetailModal';
 import { DiyaWish } from '../types';
 import { getStoredDiyas, addDiyaWish, toggleDiyaLike } from '../utils/diyaStorage';
+import { sounds } from '../utils/soundEffects';
 
 interface LightADiyaStudioProps {
   onBackToHome: () => void;
@@ -23,16 +24,19 @@ export const LightADiyaStudio: React.FC<LightADiyaStudioProps> = ({ onBackToHome
   }, []);
 
   const handleSelectDiya = (diya: DiyaWish) => {
+    sounds.playTempleBell(987.77); // B5 gentle chime
     setSelectedDiya(diya);
   };
 
   const handleCanvasClickPlace = (coord: { x: number; y: number }) => {
+    sounds.playTempleBell(659.25); // E5 chime
     setPendingCoord(coord);
     setIsPlacementMode(false);
     setIsFormOpen(true);
   };
 
   const handleStartPlacement = () => {
+    sounds.playTempleBell(523.25); // C5 chime
     setIsPlacementMode(true);
   };
 
@@ -44,6 +48,7 @@ export const LightADiyaStudio: React.FC<LightADiyaStudioProps> = ({ onBackToHome
     y: number;
     intensity: number;
   }) => {
+    sounds.playDiyaIgnition();
     const created = addDiyaWish(newWishData);
     setDiyas(getStoredDiyas());
     setSelectedDiya(created);
@@ -51,6 +56,7 @@ export const LightADiyaStudio: React.FC<LightADiyaStudioProps> = ({ onBackToHome
   };
 
   const handleLikeDiya = (id: string) => {
+    sounds.playTempleBell(1046.5); // C6 bell
     const updated = toggleDiyaLike(id);
     setDiyas(updated);
     if (selectedDiya && selectedDiya.id === id) {
