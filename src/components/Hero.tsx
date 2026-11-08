@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, Compass } from 'lucide-react';
-import { TraditionalDiya } from './TraditionalDiya';
+import { Diya3DCanvas } from './Diya3DCanvas';
 
 interface HeroProps {
   onEnterClick: () => void;
@@ -53,14 +53,20 @@ export const Hero: React.FC<HeroProps> = ({ onEnterClick, onExploreClick }) => {
           </h2>
         </motion.div>
 
-        {/* Visual Centerpiece: Handcrafted Realistic Traditional Diya */}
+        {/* Visual Centerpiece: Interactive 3D WebGL Diya */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="my-10 sm:my-14"
+          className="my-6 sm:my-8 relative flex flex-col items-center"
         >
-          <TraditionalDiya />
+          {/* Subtle 3D Hint Badge */}
+          <div className="absolute -top-3 z-10 px-3 py-1 rounded-full border border-gold-primary/30 bg-background-elevated/70 backdrop-blur-md text-[10px] uppercase tracking-widest text-gold-glow flex items-center gap-1.5 shadow-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-warm animate-ping" />
+            <span>Interactive 3D • Move Cursor to Rotate</span>
+          </div>
+
+          <Diya3DCanvas />
         </motion.div>
 
         {/* Hero Narrative Description */}

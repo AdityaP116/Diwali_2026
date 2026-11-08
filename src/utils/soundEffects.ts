@@ -274,38 +274,8 @@ class SoundSynthesizer {
     }
   }
 
-  public playRocketLaunch() {
-    if (this.isMuted) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(420, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1400 + Math.random() * 300, ctx.currentTime + 0.45);
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(1600, ctx.currentTime);
-
-      gain.gain.setValueAtTime(0.04, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.2);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
-
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start();
-      osc.stop(ctx.currentTime + 0.45);
-    } catch {
-      // Ignored
-    }
-  }
-
+  // Realistic Multi-Layered Indian Diwali Firecracker Audio
+  // Simulates authentic supersonic shockwaves, gunpowder boom, multiple rapid crackle chains (ladi), and fountain sizzles
   public playFireworkExplosion(type: string = 'burst') {
     if (this.isMuted) return;
     const ctx = this.getContext();
@@ -314,67 +284,158 @@ class SoundSynthesizer {
     try {
       const now = ctx.currentTime;
 
-      // 1. Sub-bass Thump
-      const subOsc = ctx.createOscillator();
-      const subGain = ctx.createGain();
-      subOsc.type = 'sine';
-      subOsc.frequency.setValueAtTime(130, now);
-      subOsc.frequency.exponentialRampToValueAtTime(32, now + 0.45);
-
-      subGain.gain.setValueAtTime(0.3, now);
-      subGain.gain.exponentialRampToValueAtTime(0.005, now + 0.45);
-
-      subOsc.connect(subGain);
-      subGain.connect(ctx.destination);
-      subOsc.start(now);
-      subOsc.stop(now + 0.45);
-
-      // 2. Burst Noise Body
-      const noiseDur = type === 'willow' ? 0.9 : 0.55;
-      const bufferSize = ctx.sampleRate * noiseDur;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.15));
+      // 1. Initial High-Velocity Gunpowder Shockwave / Crack (Loud transient punch)
+      const snapNoise = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.04), ctx.sampleRate);
+      const snapData = snapNoise.getChannelData(0);
+      for (let i = 0; i < snapData.length; i++) {
+        snapData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.006));
       }
+      const snapSource = ctx.createBufferSource();
+      snapSource.buffer = snapNoise;
 
-      const noise = ctx.createBufferSource();
-      noise.buffer = buffer;
+      const snapFilter = ctx.createBiquadFilter();
+      snapFilter.type = 'highpass';
+      snapFilter.frequency.setValueAtTime(1400, now);
+
+      const snapGain = ctx.createGain();
+      snapGain.gain.setValueAtTime(0.55, now);
+      snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+      snapSource.connect(snapFilter);
+      snapFilter.connect(snapGain);
+      snapGain.connect(ctx.destination);
+      snapSource.start(now);
+      snapSource.stop(now + 0.04);
+
+      // 2. Heavy Subwoofer Ground-shaking Thump (40Hz - 25Hz)
+      const boomOsc = ctx.createOscillator();
+      const boomGain = ctx.createGain();
+      boomOsc.type = 'triangle';
+      boomOsc.frequency.setValueAtTime(160, now);
+      boomOsc.frequency.exponentialRampToValueAtTime(30, now + 0.55);
+
+      boomGain.gain.setValueAtTime(0.48, now);
+      boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+      boomOsc.connect(boomGain);
+      boomGain.connect(ctx.destination);
+      boomOsc.start(now);
+      boomOsc.stop(now + 0.55);
+
+      // 3. Resonant Air Shockwave Rumble & Reverb
+      const rumbleDur = type === 'willow' ? 1.3 : 0.85;
+      const rumbleBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * rumbleDur), ctx.sampleRate);
+      const rumbleData = rumbleBuf.getChannelData(0);
+      for (let i = 0; i < rumbleData.length; i++) {
+        rumbleData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.35));
+      }
+      const rumbleSource = ctx.createBufferSource();
+      rumbleSource.buffer = rumbleBuf;
+
+      const rumbleFilter = ctx.createBiquadFilter();
+      rumbleFilter.type = 'lowpass';
+      rumbleFilter.frequency.setValueAtTime(650, now);
+      rumbleFilter.frequency.exponentialRampToValueAtTime(90, now + rumbleDur);
+
+      const rumbleGain = ctx.createGain();
+      rumbleGain.gain.setValueAtTime(0.38, now);
+      rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + rumbleDur);
+
+      rumbleSource.connect(rumbleFilter);
+      rumbleFilter.connect(rumbleGain);
+      rumbleGain.connect(ctx.destination);
+      rumbleSource.start(now);
+      rumbleSource.stop(now + rumbleDur);
+
+      // 4. Authentic Firecracker "Ladi" / "Chilli Bomb" Crackle Salvo
+      // Simulates real metallic gunpowder pops popping across the sky
+      const crackleCount = type === 'willow' ? 14 : type === 'chrysanthemum' || type === 'chakra' ? 12 : 6;
+      for (let c = 0; c < crackleCount; c++) {
+        const popDelay = 0.08 + Math.random() * (type === 'willow' ? 0.95 : 0.55);
+        const popDuration = 0.02 + Math.random() * 0.025;
+        const popBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * popDuration), ctx.sampleRate);
+        const popData = popBuf.getChannelData(0);
+        for (let p = 0; p < popData.length; p++) {
+          popData[p] = (Math.random() * 2 - 1) * Math.exp(-p / (ctx.sampleRate * 0.004));
+        }
+
+        const popSource = ctx.createBufferSource();
+        popSource.buffer = popBuf;
+
+        const popFilter = ctx.createBiquadFilter();
+        popFilter.type = 'bandpass';
+        popFilter.frequency.setValueAtTime(1800 + Math.random() * 2200, now + popDelay);
+        popFilter.Q.setValueAtTime(3.5, now + popDelay);
+
+        const popGain = ctx.createGain();
+        popGain.gain.setValueAtTime(0.18 + Math.random() * 0.12, now + popDelay);
+        popGain.gain.exponentialRampToValueAtTime(0.001, now + popDelay + popDuration);
+
+        popSource.connect(popFilter);
+        popFilter.connect(popGain);
+        popGain.connect(ctx.destination);
+        popSource.start(now + popDelay);
+        popSource.stop(now + popDelay + popDuration);
+      }
+    } catch {
+      // Ignored
+    }
+  }
+
+  // Authentic Firecracker Whistle & Sizzle for Anar / Rockets
+  public playRocketLaunch() {
+    if (this.isMuted) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+
+      // 1. Screamer / Whistle (Rapid frequency flare)
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(450, now);
+      osc.frequency.exponentialRampToValueAtTime(1800 + Math.random() * 400, now + 0.42);
 
       const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(800, now);
-      filter.frequency.exponentialRampToValueAtTime(180, now + noiseDur);
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, now);
+      filter.Q.setValueAtTime(4.0, now);
 
-      const noiseGain = ctx.createGain();
-      noiseGain.gain.setValueAtTime(0.22, now);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + noiseDur);
+      gain.gain.setValueAtTime(0.03, now);
+      gain.gain.linearRampToValueAtTime(0.1, now + 0.2);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
 
-      noise.connect(filter);
-      filter.connect(noiseGain);
-      noiseGain.connect(ctx.destination);
-      noise.start(now);
-      noise.stop(now + noiseDur);
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.45);
 
-      // 3. Crackling Sparkles
-      if (type === 'chrysanthemum' || type === 'willow' || type === 'chakra') {
-        const sparkleCount = 6;
-        for (let s = 0; s < sparkleCount; s++) {
-          const delay = 0.15 + s * 0.07 + Math.random() * 0.04;
-          const spOsc = ctx.createOscillator();
-          const spGain = ctx.createGain();
-          spOsc.type = 'square';
-          spOsc.frequency.setValueAtTime(1200 + Math.random() * 1200, now + delay);
-
-          spGain.gain.setValueAtTime(0.03, now + delay);
-          spGain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.05);
-
-          spOsc.connect(spGain);
-          spGain.connect(ctx.destination);
-          spOsc.start(now + delay);
-          spOsc.stop(now + delay + 0.05);
-        }
+      // 2. Burning Gunpowder Fuse Sizzle (high frequency noise)
+      const sizzleBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.4), ctx.sampleRate);
+      const sizzleData = sizzleBuf.getChannelData(0);
+      for (let i = 0; i < sizzleData.length; i++) {
+        sizzleData[i] = Math.random() * 2 - 1;
       }
+      const sizzle = ctx.createBufferSource();
+      sizzle.buffer = sizzleBuf;
+
+      const sizzleFilter = ctx.createBiquadFilter();
+      sizzleFilter.type = 'highpass';
+      sizzleFilter.frequency.setValueAtTime(3500, now);
+
+      const sizzleGain = ctx.createGain();
+      sizzleGain.gain.setValueAtTime(0.06, now);
+      sizzleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+      sizzle.connect(sizzleFilter);
+      sizzleFilter.connect(sizzleGain);
+      sizzleGain.connect(ctx.destination);
+      sizzle.start(now);
+      sizzle.stop(now + 0.4);
     } catch {
       // Ignored
     }
