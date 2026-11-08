@@ -92,15 +92,15 @@ export const DiyaCourtyardCanvas: React.FC<DiyaCourtyardCanvasProps> = ({
         centerY,
         width * 0.7
       );
-      ambientGlow.addColorStop(0, 'rgba(23, 31, 53, 0.7)');
-      ambientGlow.addColorStop(0.5, 'rgba(16, 22, 41, 0.85)');
-      ambientGlow.addColorStop(1, 'rgba(8, 11, 24, 0.98)');
+      ambientGlow.addColorStop(0, 'rgba(36, 51, 75, 0.7)');
+      ambientGlow.addColorStop(0.5, 'rgba(17, 29, 50, 0.88)');
+      ambientGlow.addColorStop(1, 'rgba(8, 14, 28, 0.98)');
       ctx.fillStyle = ambientGlow;
       ctx.fillRect(0, 0, width, height);
 
       // Delicate Sacred Mandala Geometry on Courtyard Floor
       ctx.save();
-      ctx.strokeStyle = 'rgba(231, 190, 112, 0.07)';
+      ctx.strokeStyle = 'rgba(217, 182, 111, 0.09)';
       ctx.lineWidth = 1;
       for (let r = 80; r <= Math.max(width, height) * 0.5; r += 70) {
         ctx.beginPath();

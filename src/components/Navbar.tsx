@@ -90,19 +90,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onExploreClick }) => {
           <button
             onClick={toggleSound}
             type="button"
-            className="p-2 sm:px-3 sm:py-1.5 rounded-full border border-festive-border bg-background-elevated/40 hover:bg-background-elevated hover:border-gold-primary/40 text-muted hover:text-ivory transition-all flex items-center gap-2 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary"
+            className="p-2 sm:px-3.5 sm:py-1.5 rounded-full border border-festive-border bg-background-secondary/80 hover:bg-background-elevated hover:border-gold-primary/50 text-muted hover:text-ivory transition-all flex items-center gap-2 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-primary"
             aria-label={isMuted ? 'Unmute festive atmosphere sound' : 'Mute festive atmosphere sound'}
             title={isMuted ? 'Atmosphere sound muted (Visual demo)' : 'Atmosphere sound playing'}
           >
             {isMuted ? (
               <>
                 <VolumeX className="w-4 h-4 text-muted group-hover:text-gold-primary" />
-                <span className="hidden sm:inline tracking-wider">AUDIO OFF</span>
+                <span className="hidden sm:inline tracking-wider font-medium">AUDIO OFF</span>
               </>
             ) : (
               <>
-                <Volume2 className="w-4 h-4 text-amber-warm animate-pulse" />
-                <span className="hidden sm:inline tracking-wider text-gold-glow">AUDIO ON</span>
+                <Volume2 className="w-4 h-4 text-gold-primary animate-pulse" />
+                <span className="hidden sm:inline tracking-wider text-gold-glow font-medium">AUDIO ON</span>
               </>
             )}
           </button>
@@ -111,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onExploreClick }) => {
           <button
             onClick={onExploreClick}
             type="button"
-            className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs uppercase tracking-widest font-semibold bg-gradient-to-r from-gold-secondary via-gold-primary to-amber-warm text-background-DEFAULT hover:shadow-[0_0_20px_rgba(231,190,112,0.4)] hover:brightness-105 active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gold-primary"
+            className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold bg-gold-primary hover:bg-gold-glow text-background shadow-[0_0_16px_rgba(217,182,111,0.25)] hover:shadow-[0_0_24px_rgba(217,182,111,0.45)] active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gold-primary"
           >
             <Sparkles className="w-3.5 h-3.5 text-background" />
             <span>Explore</span>

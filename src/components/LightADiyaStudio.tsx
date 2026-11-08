@@ -85,10 +85,10 @@ export const LightADiyaStudio: React.FC<LightADiyaStudioProps> = ({ onBackToHome
 
           <button
             onClick={handleStartPlacement}
-            className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-widest font-semibold flex items-center gap-2 transition-all shadow-md ${
+            className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-wider font-semibold flex items-center gap-2 transition-all shadow-md ${
               isPlacementMode
                 ? 'bg-amber-warm text-background ring-2 ring-gold-primary animate-pulse'
-                : 'bg-gradient-to-r from-gold-secondary via-gold-primary to-amber-warm text-background-DEFAULT hover:brightness-105 active:scale-95'
+                : 'bg-gold-primary hover:bg-gold-glow text-background active:scale-95'
             }`}
           >
             <PlusCircle className="w-4 h-4 text-background" />

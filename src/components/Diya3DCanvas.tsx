@@ -19,229 +19,233 @@ export const Diya3DCanvas: React.FC<Diya3DCanvasProps> = ({
     // --- Scene, Camera & WebGL Renderer ---
     const scene = new THREE.Scene();
 
-    const width = container.clientWidth || 400;
-    const height = container.clientHeight || 320;
+    const width = container.clientWidth || 440;
+    const height = container.clientHeight || 340;
 
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 3.8, 6.8);
-    camera.lookAt(0, 0.5, 0);
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    // Adjusted camera height & distance for elegant eye-level perspective
+    camera.position.set(0, 3.2, 6.2);
+    camera.lookAt(0, 0.6, 0);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    // Explicit transparent WebGL background (no black box, blends naturally with DOM)
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance',
+    });
+    renderer.setClearColor(0x000000, 0); // Completely transparent background
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.35;
 
     container.appendChild(renderer.domElement);
 
     // Group to hold complete Diya for tilt / rotation
     const diyaGroup = new THREE.Group();
+    // Centered pivot height
+    diyaGroup.position.set(0, -0.2, 0);
     scene.add(diyaGroup);
 
-    // --- 1. Materials ---
-    // Traditional handcrafted Terracotta Mitti clay material
-    const clayMaterial = new THREE.MeshStandardMaterial({
-      color: 0x96391a,
-      roughness: 0.65,
-      metalness: 0.12,
-      bumpScale: 0.05,
-    });
-
-    // Antique Gold Beaded Trim & Ornament
-    const goldMaterial = new THREE.MeshStandardMaterial({
-      color: 0xe7be70,
-      roughness: 0.28,
+    // --- 1. Materials: Regal Champagne Brass & Antique Gold ---
+    const brassMaterial = new THREE.MeshStandardMaterial({
+      color: 0xd9b66f, // Champagne gold
+      roughness: 0.22,
       metalness: 0.88,
     });
 
-    // Ghee / Sesame Oil Basin Material with warm reflection
-    const oilMaterial = new THREE.MeshStandardMaterial({
-      color: 0x7c2d12,
-      roughness: 0.08,
-      metalness: 0.45,
+    const polishedGoldMaterial = new THREE.MeshStandardMaterial({
+      color: 0xf3dba9, // Warm highlights
+      roughness: 0.15,
+      metalness: 0.95,
     });
 
-    // Cotton batti / wick
+    // Deep warm consecrated sesame oil / ghee
+    const oilMaterial = new THREE.MeshStandardMaterial({
+      color: 0x4a2a12,
+      roughness: 0.05,
+      metalness: 0.35,
+    });
+
+    // Cotton wick with charred tip
     const wickMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1c1917,
+      color: 0x242426,
       roughness: 0.9,
     });
 
-    // --- 2. Geometry: Terracotta Clay Bowl ---
-    // Smooth sculpted lathe profile for authentic Indian Mitti Ka Diya
-    const points: THREE.Vector2[] = [];
-    points.push(new THREE.Vector2(0, 0));
-    points.push(new THREE.Vector2(0.9, 0.04));
-    points.push(new THREE.Vector2(1.5, 0.35));
-    points.push(new THREE.Vector2(2.1, 0.85));
-    points.push(new THREE.Vector2(2.35, 1.2));
-    points.push(new THREE.Vector2(2.2, 1.35));
-    points.push(new THREE.Vector2(1.95, 1.28));
-    points.push(new THREE.Vector2(1.7, 0.9));
-    points.push(new THREE.Vector2(1.1, 0.6));
-    points.push(new THREE.Vector2(0, 0.5));
+    // --- 2. Geometry: Authentic Traditional Indian Brass Diya (Deepam) ---
+    // Pedestal Base + Slender Neck + Fluted Oil Bowl + Spout
+    // Pedestal Footing
+    const basePoints: THREE.Vector2[] = [];
+    basePoints.push(new THREE.Vector2(0, 0));
+    basePoints.push(new THREE.Vector2(1.1, 0.02));
+    basePoints.push(new THREE.Vector2(1.15, 0.12));
+    basePoints.push(new THREE.Vector2(0.85, 0.22));
+    basePoints.push(new THREE.Vector2(0.55, 0.35));
+    basePoints.push(new THREE.Vector2(0.48, 0.5));
+    basePoints.push(new THREE.Vector2(0.65, 0.62));
+    basePoints.push(new THREE.Vector2(0.9, 0.72));
+    basePoints.push(new THREE.Vector2(1.7, 0.95));
+    basePoints.push(new THREE.Vector2(2.1, 1.25));
+    basePoints.push(new THREE.Vector2(2.2, 1.4));
+    basePoints.push(new THREE.Vector2(1.95, 1.36));
+    basePoints.push(new THREE.Vector2(1.6, 1.05));
+    basePoints.push(new THREE.Vector2(0, 0.92));
 
-    const bowlGeo = new THREE.LatheGeometry(points, 48);
-    // Slight organic flattening to form traditional pinched spout (nose) for the wick
-    const pos = bowlGeo.attributes.position;
+    const latheGeo = new THREE.LatheGeometry(basePoints, 52);
+    // Pinched nose spout for authentic wick placement at +Z
+    const pos = latheGeo.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       let x = pos.getX(i);
       let y = pos.getY(i);
       let z = pos.getZ(i);
-      // Pinch forward at front z > 0.5
-      if (z > 0.6 && y > 0.6) {
-        x *= 0.72; // pinch sides inwards
-        z *= 1.15; // stretch forward
+      if (z > 0.6 && y > 0.8) {
+        x *= 0.68;
+        z *= 1.22;
       }
       pos.setXYZ(i, x, y, z);
     }
-    bowlGeo.computeVertexNormals();
+    latheGeo.computeVertexNormals();
 
-    const diyaMesh = new THREE.Mesh(bowlGeo, clayMaterial);
+    const diyaMesh = new THREE.Mesh(latheGeo, brassMaterial);
     diyaMesh.castShadow = true;
     diyaMesh.receiveShadow = true;
     diyaGroup.add(diyaMesh);
 
-    // --- 3. Beaded Gold Filigree Rim ---
-    const beadCount = 36;
-    const beadRadius = 0.06;
+    // --- 3. Filigree Gold Beaded Rim Detailing ---
+    const beadCount = 38;
+    const beadRadius = 0.055;
     const beadGeo = new THREE.SphereGeometry(beadRadius, 12, 12);
     const beadsGroup = new THREE.Group();
 
     for (let i = 0; i < beadCount; i++) {
       const angle = (i / beadCount) * Math.PI * 2;
-      let rx = Math.cos(angle) * 2.22;
-      let rz = Math.sin(angle) * 2.22;
+      let rx = Math.cos(angle) * 2.15;
+      let rz = Math.sin(angle) * 2.15;
       if (rz > 0.6) {
-        rx *= 0.72;
-        rz *= 1.15;
+        rx *= 0.68;
+        rz *= 1.22;
       }
-      const bead = new THREE.Mesh(beadGeo, goldMaterial);
-      bead.position.set(rx, 1.3, rz);
+      const bead = new THREE.Mesh(beadGeo, polishedGoldMaterial);
+      bead.position.set(rx, 1.38, rz);
       beadsGroup.add(bead);
     }
     diyaGroup.add(beadsGroup);
 
-    // --- 4. Oil Basin Pool ---
-    const oilGeo = new THREE.CylinderGeometry(1.72, 1.45, 0.12, 32);
+    // --- 4. Ghee / Oil Pool ---
+    const oilGeo = new THREE.CylinderGeometry(1.65, 1.3, 0.1, 32);
     const oilMesh = new THREE.Mesh(oilGeo, oilMaterial);
-    oilMesh.position.set(0, 0.88, 0.15);
+    oilMesh.position.set(0, 1.02, 0.15);
     diyaGroup.add(oilMesh);
 
     // --- 5. Cotton Batti (Wick) ---
-    const wickGeo = new THREE.CylinderGeometry(0.045, 0.06, 0.45, 12);
+    const wickGeo = new THREE.CylinderGeometry(0.04, 0.055, 0.42, 12);
     const wickMesh = new THREE.Mesh(wickGeo, wickMaterial);
-    wickMesh.position.set(0, 1.15, 1.7);
-    wickMesh.rotation.x = Math.PI / 6;
+    wickMesh.position.set(0, 1.26, 1.76);
+    wickMesh.rotation.x = Math.PI / 5.5;
     diyaGroup.add(wickMesh);
 
-    // --- 6. 3D Flame Hierarchy ---
-    // Outer Flame Corona (Warm Orange/Amber Glow)
-    const outerFlameGeo = new THREE.ConeGeometry(0.32, 1.1, 24);
-    outerFlameGeo.translate(0, 0.55, 0);
+    // --- 6. Flame Hierarchy with Pure Additive Blending (No dark boxes) ---
+    // Outer Flame Corona (Warm Golden Amber)
+    const outerFlameGeo = new THREE.ConeGeometry(0.3, 1.15, 24);
+    outerFlameGeo.translate(0, 0.58, 0);
     const outerFlameMat = new THREE.MeshBasicMaterial({
-      color: 0xff7a33,
+      color: 0xe5a955,
       transparent: true,
       opacity: 0.85,
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide,
+      depthWrite: false,
     });
     const outerFlame = new THREE.Mesh(outerFlameGeo, outerFlameMat);
-    outerFlame.position.set(0, 1.25, 1.72);
+    outerFlame.position.set(0, 1.34, 1.78);
     diyaGroup.add(outerFlame);
 
-    // Inner Radiant Flame Core (Ivory White / Gold)
-    const innerFlameGeo = new THREE.ConeGeometry(0.18, 0.75, 20);
-    innerFlameGeo.translate(0, 0.38, 0);
+    // Inner Radiant Flame Core (Ivory / Champagne)
+    const innerFlameGeo = new THREE.ConeGeometry(0.16, 0.8, 20);
+    innerFlameGeo.translate(0, 0.4, 0);
     const innerFlameMat = new THREE.MeshBasicMaterial({
-      color: 0xfff3da,
+      color: 0xfff1d8,
       transparent: true,
       opacity: 0.95,
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide,
+      depthWrite: false,
     });
     const innerFlame = new THREE.Mesh(innerFlameGeo, innerFlameMat);
-    innerFlame.position.set(0, 1.26, 1.72);
+    innerFlame.position.set(0, 1.35, 1.78);
     diyaGroup.add(innerFlame);
 
-    // Blue Fire Base
-    const blueFlameGeo = new THREE.SphereGeometry(0.12, 12, 12);
+    // Base Blue Combustion Root
+    const blueFlameGeo = new THREE.SphereGeometry(0.11, 12, 12);
     const blueFlameMat = new THREE.MeshBasicMaterial({
       color: 0x3b82f6,
       transparent: true,
-      opacity: 0.7,
+      opacity: 0.65,
       blending: THREE.AdditiveBlending,
+      depthWrite: false,
     });
     const blueFlame = new THREE.Mesh(blueFlameGeo, blueFlameMat);
-    blueFlame.position.set(0, 1.28, 1.72);
-    blueFlame.scale.set(1, 0.5, 1);
+    blueFlame.position.set(0, 1.38, 1.78);
+    blueFlame.scale.set(1, 0.45, 1);
     diyaGroup.add(blueFlame);
 
-    // --- 7. Dynamic Lights ---
-    // Central Flame Point Light (illuminates diya body & scene)
-    const flameLight = new THREE.PointLight(0xffb347, 3.8, 12, 1.2);
-    flameLight.position.set(0, 1.8, 1.72);
+    // --- 7. Lighting Environment ---
+    // Warm flame point light casting soft shadows on brass curves
+    const flameLight = new THREE.PointLight(0xd9b66f, 3.6, 12, 1.1);
+    flameLight.position.set(0, 1.95, 1.78);
     flameLight.castShadow = true;
     flameLight.shadow.bias = -0.002;
     diyaGroup.add(flameLight);
 
-    // Secondary Warm Ambient Floor Glow Light
-    const floorGlowLight = new THREE.PointLight(0xff7a33, 1.5, 6);
-    floorGlowLight.position.set(0, 0.2, 0);
-    diyaGroup.add(floorGlowLight);
+    // Subtle warm rim light for champagne brass specular highlights
+    const keyLight = new THREE.DirectionalLight(0xfff1d8, 1.2);
+    keyLight.position.set(3, 5, 4);
+    scene.add(keyLight);
 
-    // Hemisphere Ambient Lighting
-    const hemiLight = new THREE.HemisphereLight(0x171f35, 0x080b18, 0.75);
-    scene.add(hemiLight);
+    const fillLight = new THREE.DirectionalLight(0x24334b, 0.8);
+    fillLight.position.set(-4, 3, -2);
+    scene.add(fillLight);
 
-    // Soft Rim Light from Back
-    const rimLight = new THREE.DirectionalLight(0xe7be70, 0.8);
-    rimLight.position.set(0, 5, -5);
-    scene.add(rimLight);
+    const backRimLight = new THREE.DirectionalLight(0xd9b66f, 0.9);
+    backRimLight.position.set(0, 4, -4);
+    scene.add(backRimLight);
 
-    // Ground Shadow Catcher
-    const floorGeo = new THREE.PlaneGeometry(16, 16);
-    const floorMat = new THREE.ShadowMaterial({ opacity: 0.45 });
-    const floor = new THREE.Mesh(floorGeo, floorMat);
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = -0.05;
-    floor.receiveShadow = true;
-    scene.add(floor);
-
-    // --- 8. Rising Embers Particle Cloud ---
-    const emberCount = 38;
+    // --- 8. Rising Embers Particles ---
+    const emberCount = 32;
     const emberGeo = new THREE.BufferGeometry();
     const emberPositions = new Float32Array(emberCount * 3);
     const emberVelocities: { x: number; y: number; z: number; life: number }[] = [];
 
     for (let i = 0; i < emberCount; i++) {
-      emberPositions[i * 3] = (Math.random() - 0.5) * 0.4;
-      emberPositions[i * 3 + 1] = 1.3 + Math.random() * 2;
-      emberPositions[i * 3 + 2] = 1.72 + (Math.random() - 0.5) * 0.4;
+      emberPositions[i * 3] = (Math.random() - 0.5) * 0.35;
+      emberPositions[i * 3 + 1] = 1.4 + Math.random() * 1.8;
+      emberPositions[i * 3 + 2] = 1.78 + (Math.random() - 0.5) * 0.35;
       emberVelocities.push({
-        x: (Math.random() - 0.5) * 0.015,
-        y: 0.018 + Math.random() * 0.02,
-        z: (Math.random() - 0.5) * 0.015,
+        x: (Math.random() - 0.5) * 0.012,
+        y: 0.016 + Math.random() * 0.018,
+        z: (Math.random() - 0.5) * 0.012,
         life: Math.random(),
       });
     }
 
     emberGeo.setAttribute('position', new THREE.BufferAttribute(emberPositions, 3));
     const emberMat = new THREE.PointsMaterial({
-      color: 0xffe194,
-      size: 0.075,
+      color: 0xf3dba9,
+      size: 0.065,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.8,
       blending: THREE.AdditiveBlending,
+      depthWrite: false,
     });
     const emberParticles = new THREE.Points(emberGeo, emberMat);
     diyaGroup.add(emberParticles);
 
     // --- Interactive Hover & Orbit Controls ---
     let targetRotY = 0;
-    let targetRotX = 0.15;
+    let targetRotX = 0.12;
     let mouseX = 0;
     let mouseY = 0;
 
@@ -250,19 +254,18 @@ export const Diya3DCanvas: React.FC<Diya3DCanvasProps> = ({
       const rect = container.getBoundingClientRect();
       mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouseY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      targetRotY = mouseX * 0.65;
-      targetRotX = 0.15 - mouseY * 0.25;
+      targetRotY = mouseX * 0.6;
+      targetRotX = 0.12 - mouseY * 0.22;
     };
 
     container.addEventListener('mousemove', onPointerMove);
 
-    // Touch support for mobile rotation
     const onTouchMove = (e: TouchEvent) => {
       if (!enableInteraction || e.touches.length === 0) return;
       const rect = container.getBoundingClientRect();
       const touch = e.touches[0];
       mouseX = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
-      targetRotY = mouseX * 0.7;
+      targetRotY = mouseX * 0.65;
     };
     container.addEventListener('touchmove', onTouchMove);
 
@@ -273,50 +276,47 @@ export const Diya3DCanvas: React.FC<Diya3DCanvasProps> = ({
     const animate = () => {
       const time = clock.getElapsedTime();
 
-      // Smooth damped rotation on mouse move
+      // Smooth damped rotation on mouse interaction
       diyaGroup.rotation.y += (targetRotY - diyaGroup.rotation.y) * 0.06;
       diyaGroup.rotation.x += (targetRotX - diyaGroup.rotation.x) * 0.06;
 
-      // Realistic Non-linear Multi-harmonic Flame Flicker
-      const flicker1 = Math.sin(time * 9.5) * 0.07;
-      const flicker2 = Math.cos(time * 14.2) * 0.05;
-      const flicker3 = Math.sin(time * 22.0) * 0.03;
-      const totalFlicker = flicker1 + flicker2 + flicker3;
+      // Realistic Multi-harmonic Flame Flicker
+      const flicker =
+        Math.sin(time * 9.5) * 0.06 +
+        Math.cos(time * 14.2) * 0.04 +
+        Math.sin(time * 22.0) * 0.025;
 
-      // Scale flame body organically
       outerFlame.scale.set(
-        1 + totalFlicker * 0.8,
-        1 + totalFlicker * 1.5,
-        1 + totalFlicker * 0.8
+        1 + flicker * 0.7,
+        1 + flicker * 1.4,
+        1 + flicker * 0.7
       );
-      outerFlame.rotation.z = Math.sin(time * 7) * 0.08;
-      outerFlame.rotation.x = Math.cos(time * 6) * 0.06;
+      outerFlame.rotation.z = Math.sin(time * 6.5) * 0.07;
+      outerFlame.rotation.x = Math.cos(time * 5.5) * 0.05;
 
       innerFlame.scale.set(
-        1 + totalFlicker * 0.6,
-        1 + totalFlicker * 1.2,
-        1 + totalFlicker * 0.6
+        1 + flicker * 0.5,
+        1 + flicker * 1.1,
+        1 + flicker * 0.5
       );
       innerFlame.rotation.z = outerFlame.rotation.z * 0.9;
 
-      // Light intensity pulsates with flame
-      flameLight.intensity = 3.8 + totalFlicker * 3.2;
+      flameLight.intensity = 3.6 + flicker * 2.8;
 
       // Animate upward floating embers
       const emberPos = emberGeo.attributes.position.array as Float32Array;
       for (let i = 0; i < emberCount; i++) {
         const vel = emberVelocities[i];
-        vel.life += 0.015;
+        vel.life += 0.014;
 
-        emberPos[i * 3] += vel.x + Math.sin(time * 4 + i) * 0.003;
+        emberPos[i * 3] += vel.x + Math.sin(time * 3.5 + i) * 0.0025;
         emberPos[i * 3 + 1] += vel.y;
-        emberPos[i * 3 + 2] += vel.z + Math.cos(time * 4 + i) * 0.003;
+        emberPos[i * 3 + 2] += vel.z + Math.cos(time * 3.5 + i) * 0.0025;
 
-        // Reset ember after height
-        if (emberPos[i * 3 + 1] > 3.8 || vel.life > 1) {
-          emberPos[i * 3] = (Math.random() - 0.5) * 0.35;
-          emberPos[i * 3 + 1] = 1.35;
-          emberPos[i * 3 + 2] = 1.72 + (Math.random() - 0.5) * 0.35;
+        if (emberPos[i * 3 + 1] > 3.6 || vel.life > 1) {
+          emberPos[i * 3] = (Math.random() - 0.5) * 0.3;
+          emberPos[i * 3 + 1] = 1.4;
+          emberPos[i * 3 + 2] = 1.78 + (Math.random() - 0.5) * 0.3;
           vel.life = 0;
         }
       }
@@ -348,14 +348,14 @@ export const Diya3DCanvas: React.FC<Diya3DCanvasProps> = ({
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
-      bowlGeo.dispose();
+      latheGeo.dispose();
       beadGeo.dispose();
       oilGeo.dispose();
       wickGeo.dispose();
       outerFlameGeo.dispose();
       innerFlameGeo.dispose();
-      clayMaterial.dispose();
-      goldMaterial.dispose();
+      brassMaterial.dispose();
+      polishedGoldMaterial.dispose();
       oilMaterial.dispose();
       wickMaterial.dispose();
       outerFlameMat.dispose();
@@ -364,14 +364,14 @@ export const Diya3DCanvas: React.FC<Diya3DCanvasProps> = ({
   }, [enableInteraction]);
 
   return (
-    <div className={`relative flex items-center justify-center ${className}`}>
-      {/* 3D WebGL Canvas Mount Container */}
+    <div className={`relative flex items-center justify-center pointer-events-auto ${className}`}>
+      {/* 3D WebGL Canvas Mount Container (Explicitly transparent, perfectly blended) */}
       <div
         ref={mountRef}
-        className="w-[320px] h-[280px] sm:w-[460px] sm:h-[360px] md:w-[540px] md:h-[400px] cursor-grab active:cursor-grabbing select-none"
-        title="Interactive 3D Diya — Move cursor or touch to rotate"
+        className="w-[300px] h-[260px] sm:w-[440px] sm:h-[340px] md:w-[520px] md:h-[380px] cursor-grab active:cursor-grabbing select-none bg-transparent"
+        style={{ background: 'transparent' }}
+        title="Interactive 3D Brass Diya — Move cursor or drag on mobile to rotate"
       />
     </div>
   );
 };
-

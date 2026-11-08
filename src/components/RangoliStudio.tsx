@@ -54,7 +54,7 @@ export const RangoliStudio: React.FC<RangoliStudioProps> = ({ onBackToHome }) =>
     const cy = height / 2;
 
     ctx.save();
-    ctx.strokeStyle = 'rgba(231, 190, 112, 0.12)';
+    ctx.strokeStyle = 'rgba(217, 182, 111, 0.15)';
     ctx.lineWidth = 1;
 
     // Concentric guideline circles
@@ -75,7 +75,7 @@ export const RangoliStudio: React.FC<RangoliStudioProps> = ({ onBackToHome }) =>
     }
 
     // Center sacred bindu dot
-    ctx.fillStyle = 'rgba(231, 190, 112, 0.4)';
+    ctx.fillStyle = 'rgba(217, 182, 111, 0.5)';
     ctx.beginPath();
     ctx.arc(cx, cy, 3, 0, Math.PI * 2);
     ctx.fill();
@@ -450,7 +450,7 @@ export const RangoliStudio: React.FC<RangoliStudioProps> = ({ onBackToHome }) =>
           className="lg:col-span-3 flex flex-col items-center justify-center"
         >
           <div
-            className="relative rounded-3xl overflow-hidden border border-festive-border shadow-2xl bg-[#090C19] flex items-center justify-center p-2"
+            className="relative rounded-3xl overflow-hidden border border-festive-border shadow-2xl bg-background-secondary/90 flex items-center justify-center p-2"
             style={{ width: dimensions.width, height: dimensions.height }}
           >
             {/* Guide Grid Canvas */}

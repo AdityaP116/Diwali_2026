@@ -8,40 +8,40 @@ export default {
     extend: {
       colors: {
         background: {
-          DEFAULT: '#080B18',
-          secondary: '#101629',
-          elevated: '#171F35',
+          DEFAULT: '#080E1C',
+          secondary: '#111D32',
+          elevated: '#24334B',
         },
         gold: {
-          primary: '#E7BE70',
-          secondary: '#B98B43',
-          glow: '#FFE194',
+          primary: '#D9B66F',
+          secondary: '#B5934E',
+          glow: '#F3DBA9',
         },
         amber: {
-          warm: '#FFB347',
+          warm: '#E5A955',
         },
-        ivory: '#FFF3DA',
-        muted: '#A9B0C3',
+        ivory: '#FFF1D8',
+        muted: '#A6B0C2',
         festive: {
-          border: 'rgba(231, 190, 112, 0.18)',
-          borderHover: 'rgba(231, 190, 112, 0.45)',
-          orange: '#FF7A33',
+          border: 'rgba(217, 182, 111, 0.16)',
+          borderHover: 'rgba(217, 182, 111, 0.38)',
+          orange: '#E87D3E',
         }
       },
       fontFamily: {
-        heading: ['"Cormorant Garamond"', 'Playfair Display', 'serif'],
-        body: ['Inter', 'Manrope', 'system-ui', 'sans-serif'],
+        heading: ['"Cormorant Garamond"', 'serif'],
+        body: ['Manrope', 'system-ui', 'sans-serif'],
         sanskrit: ['"Noto Serif Devanagari"', 'serif'],
       },
       boxShadow: {
-        'diya-glow': '0 0 60px 15px rgba(255, 179, 71, 0.25), 0 0 100px 30px rgba(231, 190, 112, 0.15)',
-        'diya-inner': 'inset 0 0 20px 4px rgba(255, 122, 51, 0.4)',
-        'gold-card': '0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 16px 1px rgba(231, 190, 112, 0.1)',
-        'gold-hover': '0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 24px 3px rgba(231, 190, 112, 0.25)',
+        'diya-glow': '0 0 50px 12px rgba(217, 182, 111, 0.22), 0 0 90px 24px rgba(229, 169, 85, 0.12)',
+        'diya-inner': 'inset 0 0 20px 4px rgba(217, 182, 111, 0.25)',
+        'gold-card': '0 8px 32px 0 rgba(8, 14, 28, 0.5), 0 0 16px 1px rgba(217, 182, 111, 0.08)',
+        'gold-hover': '0 12px 40px 0 rgba(8, 14, 28, 0.7), 0 0 24px 2px rgba(217, 182, 111, 0.2)',
       },
       backgroundImage: {
-        'radial-hero': 'radial-gradient(circle at 50% 45%, rgba(35, 27, 45, 0.6) 0%, rgba(16, 22, 41, 0.8) 50%, #080B18 100%)',
-        'radial-glow': 'radial-gradient(circle at 50% 50%, rgba(255, 179, 71, 0.18) 0%, rgba(231, 190, 112, 0.05) 45%, transparent 70%)',
+        'radial-hero': 'radial-gradient(circle at 50% 40%, rgba(36, 51, 75, 0.5) 0%, rgba(17, 29, 50, 0.7) 45%, #080E1C 100%)',
+        'radial-glow': 'radial-gradient(circle at 50% 50%, rgba(217, 182, 111, 0.12) 0%, rgba(229, 169, 85, 0.04) 40%, transparent 70%)',
       },
       keyframes: {
         flicker: {

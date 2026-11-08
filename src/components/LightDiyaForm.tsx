@@ -165,7 +165,7 @@ export const LightDiyaForm: React.FC<LightDiyaFormProps> = ({
 
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold bg-gradient-to-r from-gold-secondary via-gold-primary to-amber-warm text-background-DEFAULT shadow-[0_0_20px_rgba(231,190,112,0.35)] hover:brightness-105 active:scale-95 transition-all flex items-center gap-2"
+                className="px-6 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold bg-gold-primary hover:bg-gold-glow text-background shadow-[0_0_20px_rgba(217,182,111,0.35)] active:scale-95 transition-all flex items-center gap-2"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Light Flame</span>

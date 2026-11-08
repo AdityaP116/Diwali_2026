@@ -92,7 +92,7 @@ export const Hero: React.FC<HeroProps> = ({ onEnterClick, onExploreClick }) => {
           <button
             onClick={onEnterClick}
             type="button"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold bg-gradient-to-r from-gold-secondary via-gold-primary to-amber-warm text-background font-medium shadow-[0_0_24px_rgba(231,190,112,0.35)] hover:shadow-[0_0_36px_rgba(231,190,112,0.55)] hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 group"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-semibold bg-gold-primary hover:bg-gold-glow text-background shadow-[0_0_24px_rgba(217,182,111,0.35)] hover:shadow-[0_0_32px_rgba(217,182,111,0.55)] active:scale-95 transition-all flex items-center justify-center gap-2 group"
           >
             <span>Light Your First Diya</span>
             <ArrowRight className="w-4 h-4 text-background group-hover:translate-x-1 transition-transform" />
@@ -102,7 +102,7 @@ export const Hero: React.FC<HeroProps> = ({ onEnterClick, onExploreClick }) => {
           <button
             onClick={onExploreClick}
             type="button"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-[0.2em] font-medium border border-festive-border bg-background-elevated/40 hover:bg-background-elevated/80 hover:border-gold-primary/50 text-ivory hover:text-gold-glow transition-all flex items-center justify-center gap-2 group backdrop-blur-sm"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-medium border border-festive-border bg-background-secondary/60 hover:bg-background-elevated hover:border-gold-primary/50 text-ivory hover:text-gold-glow transition-all flex items-center justify-center gap-2 group backdrop-blur-sm"
           >
             <Compass className="w-4 h-4 text-gold-primary group-hover:rotate-45 transition-transform" />
             <span>Wander the Celebrations</span>
