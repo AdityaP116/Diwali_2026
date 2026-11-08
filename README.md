@@ -1,24 +1,23 @@
 # DiwaliVerse 🪔
 
 > **Light Up the Festival. Share the Happiness.**
+> *A festive celebration, lovingly created and shared by Aditya Pushpakar.*
 
 An immersive, interactive digital Diwali celebration website crafted with a cinematic festive aesthetic.
 
 ---
 
-## ✨ Features (Phase 1)
+## ✨ Features
 
-- **Atmospheric Visual Design**: Midnight navy backgrounds (`#080B18`, `#101629`), antique gold accents (`#E7BE70`, `#B98B43`), warm amber glow (`#FFB347`), and soft ivory typography (`#FFF3DA`).
-- **Realistic Handcrafted Diya Centerpiece**: Traditional terracotta earthen diya with detailed gold-filigree rim, oil pool reflections, wick, and realistic animated multi-layered flame flicker with ambient glow corona.
-- **Ambient Golden Particle Canvas**: Fluid, low-overhead floating golden ember dust that gently rises through the night sky.
-- **Responsive Floating Navigation**: Transparent-to-glass navigation header with festive flame logo, sound state visual toggle, and mobile slide-down menu.
-- **Curated Experience Showcase**:
-  1. **Light a Diya** — Spread warmth and illuminate your digital celebration.
-  2. **Rangoli Studio** — Create colorful traditional patterns with geometry and petal art.
-  3. **Fireworks Playground** — Sky full of color, light, and celebration.
-  4. **Wish Studio** — Personalized Diwali greeting cards and warm blessings.
-- **Auspicious Festive Inscription**: Noto Serif Devanagari Sanskrit shloka (*शुभं करोति कल्याणमारोग्यं धनसंपदाम्*) and festive blessings.
-- **Accessible & Performance-focused**: Full keyboard navigation support, semantic markup, and responsive down to mobile viewports (360px–1280px+).
+- **Atmospheric Visual Design**: Midnight navy backgrounds (`#080B18`, `#101629`), sacred 16-fold lotus mandala geometry, traditional marigold toran festoons with hanging brass dipams, and fluid floating golden embers.
+- **Background Raga Music & Web Audio FX**: Meditative Indian classical raga (Raga Yaman / Bhoopali) with authentic bamboo flute (Bansuri) meend glides, crystal Santoor plucks, continuous tanpura foundation, and temple bell chimes.
+- **Realistic Handcrafted Diya Centerpiece**: Traditional terracotta earthen diya with gold-filigree rim, oil pool reflections, cotton wick, and multi-stage organic flickering flame.
+- **All 4 Curated Interactive Studios**:
+  1. 🪔 **Light a Diya** — Canvas-based sacred courtyard at dusk. Ignite digital diyas, dedicate custom wishes, choose flame auras, and browse community wishes with persistent like counters via `localStorage`.
+  2. 🎨 **Rangoli Studio** — Real-time radial drawing engine with multi-fold symmetry (4x, 6x, 8x, 12x), sacred colors, glowing and powder particle brushes, undo history, and PNG export.
+  3. 🎆 **Fireworks Playground** — Eco-friendly night sky rocket simulation with realistic trails, 5 explosion patterns (Chrysanthemum, Burst, Willow, Ring, Chakra), and multi-stage audio synthesis.
+  4. 💌 **Wish Studio** — Personalized gold-embossed greeting card designer with curated English/Sanskrit blessings, recipient/sender customization, and one-click high-resolution PNG download.
+- **Personal Touch**: Subtle creator signatures for **Aditya Pushpakar** on homepage, footer, and optional greeting card watermarks.
 
 ---
 
@@ -30,38 +29,46 @@ An immersive, interactive digital Diwali celebration website crafted with a cine
 - **Tailwind CSS**
 - **Framer Motion**
 - **Lucide React**
+- **Web Audio API** & **HTML5 Canvas 2D API** (No external heavyweight assets or backend required)
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Deployment Guide
 
-### 1. Install dependencies
+This project is client-only with zero server or database requirements. It can be deployed in seconds to any static hosting provider.
+
+### Option 1: Vercel (Recommended)
+1. Push this repository to GitHub.
+2. Go to [vercel.com](https://vercel.com) and import the repository.
+3. Vercel will automatically detect Vite:
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. Deploy! (`vercel.json` is pre-configured with SPA routing and asset caching).
+
+### Option 2: Netlify
+1. Connect repository on [netlify.com](https://netlify.com).
+2. Set build command to `npm run build` and publish directory to `dist`.
+3. Deploy! (`public/_redirects` is pre-configured for SPA fallback).
+
+### Option 3: GitHub Pages
+1. In `vite.config.ts`, set `base: './'` (or repository name).
+2. Run `npm run build` and deploy the `dist/` directory via `gh-pages` or GitHub Actions.
+
+---
+
+## 💻 Local Development
+
 ```bash
+# Install dependencies
 npm install
-```
 
-### 2. Run local development server
-```bash
+# Start development server
 npm run dev
-```
 
-### 3. Build for production
-```bash
+# Run type checks and production build
 npm run build
-```
 
-### 4. Preview production build
-```bash
+# Preview production build locally
 npm run preview
 ```
-
----
-
-## 🗺 Roadmap
-
-- **Phase 1 (Complete)**: Design system, atmospheric background, hero with realistic glowing diya, experience showcase cards, modal previewers, and responsive layout.
-- **Phase 2**: Interactive 3D/Canvas Diya Lighting engine with persistent community constellation.
-- **Phase 3**: Radial Kaleidoscopic Rangoli Drawing Studio with export capabilities.
-- **Phase 4**: Interactive Fireworks Playground with particle physics and sound effects.
-- **Phase 5**: Gold-embossed Wish Studio greeting card generator with direct social sharing.
-
